@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
-import { Account, Ed25519PrivateKey, AccountAddress, Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
+
 
 interface NFTPack {
   title: string;
@@ -19,50 +19,50 @@ const StickerMarketplace: React.FC = () => {
  
   const [nftPacks, setNFTPacks] = useState<NFTPack[]>([]);
 
-  const nftData = [
-    { 
-      title: "Good Pack", 
-      price: 100, 
-      id: 1, 
-      negative: "Evil Expression, Scowl, Frown, No beard,Sarcastic Smile,blurry images", 
-      keywords: "Cartoon, Exagerated,Handsome, Beautiful, Detailed Animation, Animated, No Background, Black Background, Happy, Long hair, Always bearded",
-      imageUrl: "https://res.cloudinary.com/dkewhgebd/image/upload/v1724837797/copsdqwxvevwbkvll2hy.jpg",
-      altText: "Good Pack NFT"
-    },
-    { 
-      title: "Evil Pack", 
-      price: 150, 
-      id: 2, 
-      negative: "Good Expression, Smile, blurry images", 
-      keywords: "Evil ,Cartoon, Exagerated,Handsome, Beautiful, Detailed Animation, Animated, No Background, Black Background, Happy, Long hair, Always bearded, Sarcastic smile",
-      imageUrl: "https://res.cloudinary.com/dkewhgebd/image/upload/v1724837806/qhyaseccdm25i8zhqsc8.jpg",
-      altText: "Evil Pack NFT"
-    },
-    {
-      title: "Ethereum Pack",
-      price: 200,
-      id: 3,
-      negative: "Bitcoin symbols, Dollar signs, Confusion, Blurry images",
-      keywords: "Ethereum, ETH, Cryptocurrency, Blockchain, Smart Contracts, Decentralized, Vitalik Buterin, Animated, No Background, Detailed Illustration, Futuristic, Tech",
-      imageUrl: "https://res.cloudinary.com/dkewhgebd/image/upload/v1724837803/jcqlnfvtjsvzlah4filf.jpg",
-      altText: "Ethereum Pack NFT"
-    },
-    {
-      title: "Bitcoin Pack",
-      price: 200,
-      id: 4,
-      negative: "Ethereum symbols, Bank buildings, Paper money, Blurry images",
-      keywords: "Bitcoin, BTC, Cryptocurrency, Blockchain, Satoshi Nakamoto, Digital Gold, Animated, No Background, Detailed Illustration, Decentralized, Finance, Mining",
-      imageUrl: "https://res.cloudinary.com/dkewhgebd/image/upload/v1724837804/bqmtrtvckxfqf4sad6aq.jpg",
-      altText: "Bitcoin Pack NFT"
-    }
-  ];
+  // const nftData = [
+  //   { 
+  //     title: "Good Pack", 
+  //     price: 100, 
+  //     id: 1, 
+  //     negative: "Evil Expression, Scowl, Frown, No beard,Sarcastic Smile,blurry images", 
+  //     keywords: "Cartoon, Exagerated,Handsome, Beautiful, Detailed Animation, Animated, No Background, Black Background, Happy, Long hair, Always bearded",
+  //     imageUrl: "https://res.cloudinary.com/dkewhgebd/image/upload/v1724837797/copsdqwxvevwbkvll2hy.jpg",
+  //     altText: "Good Pack NFT"
+  //   },
+  //   { 
+  //     title: "Evil Pack", 
+  //     price: 150, 
+  //     id: 2, 
+  //     negative: "Good Expression, Smile, blurry images", 
+  //     keywords: "Evil ,Cartoon, Exagerated,Handsome, Beautiful, Detailed Animation, Animated, No Background, Black Background, Happy, Long hair, Always bearded, Sarcastic smile",
+  //     imageUrl: "https://res.cloudinary.com/dkewhgebd/image/upload/v1724837806/qhyaseccdm25i8zhqsc8.jpg",
+  //     altText: "Evil Pack NFT"
+  //   },
+  //   {
+  //     title: "Ethereum Pack",
+  //     price: 200,
+  //     id: 3,
+  //     negative: "Bitcoin symbols, Dollar signs, Confusion, Blurry images",
+  //     keywords: "Ethereum, ETH, Cryptocurrency, Blockchain, Smart Contracts, Decentralized, Vitalik Buterin, Animated, No Background, Detailed Illustration, Futuristic, Tech",
+  //     imageUrl: "https://res.cloudinary.com/dkewhgebd/image/upload/v1724837803/jcqlnfvtjsvzlah4filf.jpg",
+  //     altText: "Ethereum Pack NFT"
+  //   },
+  //   {
+  //     title: "Bitcoin Pack",
+  //     price: 200,
+  //     id: 4,
+  //     negative: "Ethereum symbols, Bank buildings, Paper money, Blurry images",
+  //     keywords: "Bitcoin, BTC, Cryptocurrency, Blockchain, Satoshi Nakamoto, Digital Gold, Animated, No Background, Detailed Illustration, Decentralized, Finance, Mining",
+  //     imageUrl: "https://res.cloudinary.com/dkewhgebd/image/upload/v1724837804/bqmtrtvckxfqf4sad6aq.jpg",
+  //     altText: "Bitcoin Pack NFT"
+  //   }
+  // ];
 
   const mint_nftpack = async (pack: NFTPack) => {
     const data = {
       action: "Add Sticker",
       prompt: pack.keywords,
-      wallet: account.address.toString(),
+      wallet: account?.address.toString(),
       negative_prompt: pack.negative,
       price: pack.price
     };

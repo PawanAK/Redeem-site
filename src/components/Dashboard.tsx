@@ -59,6 +59,9 @@ export const Dashboard: React.FC = () => {
       }
     };
 
+    console.log("encData",encData);
+    console.log("decData",decData);
+
     fetchAccountNFTs();
     fetchCustodialAddress();
     custodialPrivateAdress();
