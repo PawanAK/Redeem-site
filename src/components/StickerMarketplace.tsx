@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
+import { Account, Ed25519PrivateKey, AccountAddress, Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 
 interface NFTPack {
   title: string;
@@ -18,7 +19,51 @@ const StickerMarketplace: React.FC = () => {
  
   const [nftPacks, setNFTPacks] = useState<NFTPack[]>([]);
 
+  const nftData = [
+    { 
+      title: "Good Pack", 
+      price: 100, 
+      id: 1, 
+      negative: "Evil Expression, Scowl, Frown, No beard,Sarcastic Smile,blurry images", 
+      keywords: "Cartoon, Exagerated,Handsome, Beautiful, Detailed Animation, Animated, No Background, Black Background, Happy, Long hair, Always bearded",
+      imageUrl: "https://res.cloudinary.com/dkewhgebd/image/upload/v1724837797/copsdqwxvevwbkvll2hy.jpg",
+      altText: "Good Pack NFT"
+    },
+    { 
+      title: "Evil Pack", 
+      price: 150, 
+      id: 2, 
+      negative: "Good Expression, Smile, blurry images", 
+      keywords: "Evil ,Cartoon, Exagerated,Handsome, Beautiful, Detailed Animation, Animated, No Background, Black Background, Happy, Long hair, Always bearded, Sarcastic smile",
+      imageUrl: "https://res.cloudinary.com/dkewhgebd/image/upload/v1724837806/qhyaseccdm25i8zhqsc8.jpg",
+      altText: "Evil Pack NFT"
+    },
+    {
+      title: "Ethereum Pack",
+      price: 200,
+      id: 3,
+      negative: "Bitcoin symbols, Dollar signs, Confusion, Blurry images",
+      keywords: "Ethereum, ETH, Cryptocurrency, Blockchain, Smart Contracts, Decentralized, Vitalik Buterin, Animated, No Background, Detailed Illustration, Futuristic, Tech",
+      imageUrl: "https://res.cloudinary.com/dkewhgebd/image/upload/v1724837803/jcqlnfvtjsvzlah4filf.jpg",
+      altText: "Ethereum Pack NFT"
+    },
+    {
+      title: "Bitcoin Pack",
+      price: 200,
+      id: 4,
+      negative: "Ethereum symbols, Bank buildings, Paper money, Blurry images",
+      keywords: "Bitcoin, BTC, Cryptocurrency, Blockchain, Satoshi Nakamoto, Digital Gold, Animated, No Background, Detailed Illustration, Decentralized, Finance, Mining",
+      imageUrl: "https://res.cloudinary.com/dkewhgebd/image/upload/v1724837804/bqmtrtvckxfqf4sad6aq.jpg",
+      altText: "Bitcoin Pack NFT"
+    }
+  ];
+
   const mint_nftpack = async (pack: NFTPack) => {
+    if (!account) {
+      console.error("Wallet not connected");
+      return;
+    }
+
     const data = {
       action: "Add Sticker",
       prompt: pack.keywords,
@@ -27,17 +72,13 @@ const StickerMarketplace: React.FC = () => {
       price: pack.price
     };
 
-    console.log(data)
-    
-    if (window.Telegram && window.Telegram.WebApp) {
-      window.Telegram.WebApp.sendData(JSON.stringify(data));
-    } else {
-      console.log("Telegram WebApp not available. Data:", data);
-    }
+    console.log("Minting NFT pack:", data);
+
+    window.Telegram.WebApp.sendData(JSON.stringify(data));
   };
 
   useEffect(() => {
-    if (window.Telegram.WebApp) {
+    if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.ready();
     }
     
@@ -78,7 +119,12 @@ const StickerMarketplace: React.FC = () => {
           <h3 className="text-lg font-semibold mb-1 text-white">{pack.title}</h3>
           <div className="flex justify-between items-center">
             <span className="text-gray-300">{pack.price} Tokens</span>
-            <button className="bg-purple-500 text-white py-1 px-3 rounded hover:bg-purple-600 transition-colors duration-200" onClick={mint_nftpack}>Buy</button>
+            <button 
+              className="bg-purple-500 text-white py-1 px-3 rounded hover:bg-purple-600 transition-colors duration-200"
+              onClick={() => mint_nftpack(pack)}
+            >
+              Buy
+            </button>
           </div>
         </motion.div>
       ))}
