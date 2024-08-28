@@ -1,22 +1,48 @@
 import React, { useState, useEffect } from "react";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { motion } from "framer-motion";
+import { useParams } from "react-router-dom";
 import StickerMarketplace from "./StickerMarketplace";
 import NFTCard from "./NFTCard";
 import { IndexerClient } from "aptos";
 
 export const Dashboard: React.FC = () => {
   const { account } = useWallet();
+  const { userId } = useParams<{ userId: string }>();
   const [balance, setBalance] = useState(1000);
   const [activeTab, setActiveTab] = useState("my nfts");
   const [nfts, setNfts] = useState<any[]>([]);
 
+  const [custodialAddress, setCustodialAddress] = useState<string | null>(null);
+  const [encData, setEncData] = useState<string | null>(null);
+  const [decData, setDecData] = useState<string | null>(null);
+
   useEffect(() => {
+
+    const fetchCustodialAddress = async () => {
+      const res = await fetch(`http://localhost:3001/api/community-user/${userId}`);
+      const data = await res.json();
+      if (data.custodialAddress) {
+        console.log("Custodial Address:", data.custodialAddress);
+        setCustodialAddress(data.custodialAddress);
+        setEncData(data.data);
+        // You can set the custodial address to a state variable here if needed
+        // setCustodialAddress(data.custodialAddress);
+      }
+    };
+
+    const custodialPrivateAdress = async()=>{
+      const res = await fetch(`http://localhost:3001/api/decrypt-user-data/${userId}`);
+      const data = await res.json();
+      console.log(data.decryptedData);
+      setDecData(data.decryptedData);
+    }
+
     const fetchAccountNFTs = async () => {
       if (account?.address) {
         const client = new IndexerClient("https://api.testnet.aptoslabs.com/v1/graphql");
         try {
-          const accountNFTs = await client.getOwnedTokens("0x23eb0d8f041a17f8060b017f0b75329d69a27a2b995e70cdeec3257583fbed80");
+          const accountNFTs = await client.getOwnedTokens(account.address);
           console.log("Account NFTs:", accountNFTs);
           setNfts(accountNFTs.current_token_ownerships_v2);
         } catch (error) {
@@ -26,6 +52,8 @@ export const Dashboard: React.FC = () => {
     };
 
     fetchAccountNFTs();
+    fetchCustodialAddress();
+    custodialPrivateAdress();
   }, [account?.address]);
 
   return (

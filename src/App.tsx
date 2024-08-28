@@ -4,6 +4,7 @@ import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { WalletConnector } from "./components/WalletConnector";
 import { Dashboard } from "./components/Dashboard";
 
+
 import "@aptos-labs/wallet-adapter-ant-design/dist/index.css";
 
 const App: React.FC = () => {
@@ -15,6 +16,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={connected ? <Navigate to="/dashboard" /> : <WalletConnector />} />
           <Route path="/dashboard" element={connected ? <Dashboard /> : <Navigate to="/" />} />
+          <Route path="/user/:userId" element={connected ? <Dashboard />:< WalletConnector/>} />
         </Routes>
       </div>
     </Router>
