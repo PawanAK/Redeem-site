@@ -26,8 +26,15 @@ export const Dashboard: React.FC = () => {
         console.log("Custodial Address:", data.custodialAddress);
         setCustodialAddress(data.custodialAddress);
         setEncData(data.data);
-        // You can set the custodial address to a state variable here if needed
-        // setCustodialAddress(data.custodialAddress);
+
+        const client = new IndexerClient("https://api.testnet.aptoslabs.com/v1/graphql");
+        const TokenBalance = await client.getAccountCoinsData(data.custodialAddress);
+        const teleGageToken = TokenBalance.current_fungible_asset_balances.find(
+          token => token.asset_type === "0xf1e9e56bb36fb6b14a0e43bdc08dd13d5712eca1935c63870d1f3cc9827aab51::telegage_token::TeleGageToken"
+        );
+        if (teleGageToken) {
+          setBalance(teleGageToken.amount); // Assuming 6 decimal places
+        }
       }
     };
 
@@ -43,6 +50,7 @@ export const Dashboard: React.FC = () => {
         const client = new IndexerClient("https://api.testnet.aptoslabs.com/v1/graphql");
         try {
           const accountNFTs = await client.getOwnedTokens(account.address);
+          
           console.log("Account NFTs:", accountNFTs);
           setNfts(accountNFTs.current_token_ownerships_v2);
         } catch (error) {
@@ -66,7 +74,7 @@ export const Dashboard: React.FC = () => {
             animate={{ opacity: 1, x: 0 }}
           >
             <p className="text-sm font-medium text-gray-400">Balance</p>
-            <p className="text-xl font-bold text-white">{balance} TGT</p>
+            <p className="text-xl font-bold text-white">{balance.toFixed(2)} TELE</p>
           </motion.div>
           <h1 className="text-2xl font-bold text-white">TeleGage Dashboard</h1>
         </div>
@@ -109,7 +117,7 @@ export const Dashboard: React.FC = () => {
             </div>
           </div>
         ) : (
-          <StickerMarketplace />
+          <StickerMarketplace privAdres={decData} />
         )}
       </motion.div>
     </div>
