@@ -59,11 +59,6 @@ const StickerMarketplace: React.FC = () => {
   ];
 
   const mint_nftpack = async (pack: NFTPack) => {
-    if (!account) {
-      console.error("Wallet not connected");
-      return;
-    }
-
     const data = {
       action: "Add Sticker",
       prompt: pack.keywords,

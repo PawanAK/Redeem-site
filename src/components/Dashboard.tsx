@@ -75,6 +75,11 @@ export const Dashboard: React.FC = () => {
           >
             <p className="text-sm font-medium text-gray-400">Balance</p>
             <p className="text-xl font-bold text-white">{balance.toFixed(2)} TELE</p>
+            {custodialAddress && (
+              <p className="text-xs text-gray-400 mt-1">
+                Custodial: {custodialAddress.slice(0, 6)}...{custodialAddress.slice(-4)}
+              </p>
+            )}
           </motion.div>
           <h1 className="text-2xl font-bold text-white">TeleGage Dashboard</h1>
         </div>
@@ -117,7 +122,7 @@ export const Dashboard: React.FC = () => {
             </div>
           </div>
         ) : (
-          <StickerMarketplace privAdres={decData} />
+          <StickerMarketplace  />
         )}
       </motion.div>
     </div>
