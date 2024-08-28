@@ -2,20 +2,23 @@ import React, { useState, useEffect } from "react";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { motion } from "framer-motion";
 import StickerMarketplace from "./StickerMarketplace";
-import { IndexerClient } from "@aptos-labs/ts-sdk";
+import NFTCard from "./NFTCard";
+import { IndexerClient } from "aptos";
 
 export const Dashboard: React.FC = () => {
   const { account } = useWallet();
   const [balance, setBalance] = useState(1000);
   const [activeTab, setActiveTab] = useState("my nfts");
+  const [nfts, setNfts] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchAccountNFTs = async () => {
       if (account?.address) {
         const client = new IndexerClient("https://api.testnet.aptoslabs.com/v1/graphql");
         try {
-          const accountNFTs = await client.getAccountNFTs(account.address);
+          const accountNFTs = await client.getOwnedTokens("0x23eb0d8f041a17f8060b017f0b75329d69a27a2b995e70cdeec3257583fbed80");
           console.log("Account NFTs:", accountNFTs);
+          setNfts(accountNFTs.current_token_ownerships_v2);
         } catch (error) {
           console.error("Error fetching account NFTs:", error);
         }
@@ -43,7 +46,7 @@ export const Dashboard: React.FC = () => {
           {account?.address.slice(0, 6)}...{account?.address.slice(-4)}
         </div>
       </header>
-
+      
       <nav className="bg-gray-800 rounded-lg shadow-md overflow-hidden">
         <div className="flex">
           {["My NFTs", "Marketplace"].map((tab) => (
@@ -66,8 +69,16 @@ export const Dashboard: React.FC = () => {
         {activeTab === "my nfts" ? (
           <div>
             <h3 className="text-xl font-bold mb-4 text-white">Your Collection</h3>
-            <p className="text-white">Check the console to see your NFTs.</p>
-            {/* You can add a loading indicator or error message here if needed */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {nfts.map((nft, index) => (
+                <NFTCard
+                  key={index}
+                  collectionName={nft.current_token_data.current_collection.collection_name}
+                  tokenUri={nft.current_token_data.token_uri}
+                  tokenName={nft.current_token_data.token_name || `Sticker #${nft.current_token_data.token_properties['Sticker #']}`}
+                />
+              ))}
+            </div>
           </div>
         ) : (
           <StickerMarketplace />
