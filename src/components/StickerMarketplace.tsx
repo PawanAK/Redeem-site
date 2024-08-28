@@ -80,7 +80,7 @@ const StickerMarketplace: React.FC = () => {
     const fetchNFTPacks = async () => {
       try {
 
-        const response = await fetch('http://localhost:3001/api/nft-packs');
+        const response = await fetch('https://telegage-server.onrender.com/api/nft-packs');
         const data = await response.json();
         setNFTPacks(data);
       } catch (error) {

@@ -9,7 +9,7 @@ import { IndexerClient } from "aptos";
 export const Dashboard: React.FC = () => {
   const { account } = useWallet();
   const { userId } = useParams<{ userId: string }>();
-  const [balance, setBalance] = useState(1000);
+  const [balance, setBalance] = useState(0);
   const [activeTab, setActiveTab] = useState("my nfts");
   const [nfts, setNfts] = useState<any[]>([]);
 
@@ -20,7 +20,7 @@ export const Dashboard: React.FC = () => {
   useEffect(() => {
 
     const fetchCustodialAddress = async () => {
-      const res = await fetch(`http://localhost:3001/api/community-user/${userId}`);
+      const res = await fetch(`https://telegage-server.onrender.com/api/community-user/${userId}`);
       const data = await res.json();
       if (data.custodialAddress) {
         console.log("Custodial Address:", data.custodialAddress);
@@ -39,7 +39,7 @@ export const Dashboard: React.FC = () => {
     };
 
     const custodialPrivateAdress = async()=>{
-      const res = await fetch(`http://localhost:3001/api/decrypt-user-data/${userId}`);
+      const res = await fetch(`https://telegage-server.onrender.com/api/decrypt-user-data/${userId}`);
       const data = await res.json();
       console.log(data.decryptedData);
       setDecData(data.decryptedData);
