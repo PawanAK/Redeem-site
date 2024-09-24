@@ -1,6 +1,7 @@
 import React from "react";
-import { WalletSelector } from "@aptos-labs/wallet-adapter-ant-design";
+
 import { motion } from "framer-motion";
+import { WalletSelector as ShadcnWalletSelector } from "./WalletSelector"
 
 export const WalletConnector: React.FC = () => {
   return (
@@ -41,7 +42,7 @@ export const WalletConnector: React.FC = () => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        <WalletSelector />
+        <ShadcnWalletSelector />
       </motion.div>
     </motion.div>
   );
