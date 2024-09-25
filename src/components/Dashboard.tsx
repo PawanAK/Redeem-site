@@ -47,12 +47,40 @@ export const Dashboard: React.FC = () => {
 
     const fetchAccountNFTs = async () => {
       if (account?.address) {
-        const client = new IndexerClient("https://api.testnet.aptoslabs.com/v1/graphql");
+        const query = `
+          query MyQuery {
+            current_token_ownerships_v2(
+              offset: 0
+              where: {owner_address: {_eq: "${account.address}"}}
+            ) {
+              owner_address
+              current_token_data {
+                collection_id
+                token_name
+                current_collection {
+                  collection_name
+                }
+                token_uri
+              }
+            }
+          }
+        `;
+
         try {
-          const accountNFTs = await client.getOwnedTokens(account.address);
-          
+          const response = await fetch("https://aptos-testnet.nodit.io/ZuOqJg-EQaAgC2j_0G-0xFOlVz-XZO4c/v1/graphql", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ query }),
+          });
+
+          const result = await response.json();
+          console.log("result nffff",result);
+          const accountNFTs = result.data.current_token_ownerships_v2;
+
           console.log("Account NFTs:", accountNFTs);
-          setNfts(accountNFTs.current_token_ownerships_v2);
+          setNfts(accountNFTs);
         } catch (error) {
           console.error("Error fetching account NFTs:", error);
         }
@@ -119,7 +147,7 @@ export const Dashboard: React.FC = () => {
                   key={index}
                   collectionName={nft.current_token_data.current_collection.collection_name}
                   tokenUri={nft.current_token_data.token_uri}
-                  tokenName={nft.current_token_data.token_name || `Sticker #${nft.current_token_data.token_properties['Sticker #']}`}
+                  tokenName={nft.current_token_data.token_name || `Sticker #${nft.current_token_data.token_properties?.['Sticker #']}`}
                 />
               ))}
             </div>
