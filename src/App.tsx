@@ -6,9 +6,13 @@ import { Dashboard } from "./components/Dashboard";
 
 
 import "@aptos-labs/wallet-adapter-ant-design/dist/index.css";
+import { useAutoConnect } from "./components/AutoConnectProvider";
 
 const App: React.FC = () => {
   const { connected } = useWallet();
+  const { autoConnect, setAutoConnect } = useAutoConnect();
+
+  setAutoConnect(true);
 
   return (
     <Router>
