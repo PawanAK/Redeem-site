@@ -16,6 +16,7 @@ export const Dashboard: React.FC = () => {
   const [custodialAddress, setCustodialAddress] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log("custodialAddress",custodialAddress);
     const fetchCustodialAddress = async () => {
       const res = await fetch(`https://telegage-server.onrender.com/api/community-user/${userId}`);
       const data = await res.json();
@@ -40,7 +41,7 @@ export const Dashboard: React.FC = () => {
           query MyQuery {
             current_token_ownerships_v2(
               offset: 0
-              where: {owner_address: {_eq: "0x23eb0d8f041a17f8060b017f0b75329d69a27a2b995e70cdeec3257583fbed80"}}
+              where: {owner_address: {_eq: "${account.address}"}}
             ) {
               owner_address
               current_token_data {

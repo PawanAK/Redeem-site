@@ -13,6 +13,7 @@ const App: React.FC = () => {
   const { autoConnect, setAutoConnect } = useAutoConnect();
 
   setAutoConnect(true);
+  console.log(autoConnect);
 
   return (
     <Router>
