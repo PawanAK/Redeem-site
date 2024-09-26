@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import StickerMarketplace from "./StickerMarketplace";
 import NFTCard from "./NFTCard";
 import { IndexerClient } from "aptos";
+import { Wallet } from "lucide-react";
 
 export const Dashboard: React.FC = () => {
   const { account } = useWallet();
@@ -83,35 +84,20 @@ export const Dashboard: React.FC = () => {
   return (
     <div className="w-full max-w-6xl mx-auto p-6 space-y-6">
       <motion.header 
-        className="bg-gradient-to-r from-purple-800 to-indigo-800 rounded-lg shadow-lg p-6"
+        className="bg-gray-800 rounded-lg shadow-lg p-4 flex justify-between items-center"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-white mb-2">TeleGage Dashboard</h1>
-            <p className="text-purple-200">Welcome to your personal sticker hub!</p>
-          </div>
-          <motion.div 
-            className="text-right"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <p className="text-2xl font-bold text-white mb-1">{balance.toFixed(2)} TELE</p>
-            <p className="text-sm text-purple-200">Balance</p>
-          </motion.div>
+        <div className="flex items-center space-x-2">
+          <Wallet className="text-purple-400 w-6 h-6" />
+          <span className="text-white font-mono">
+            {account?.address ? `${account.address.slice(0, 6)}...${account.address.slice(-4)}` : 'Not Connected'}
+          </span>
         </div>
-        <div className="mt-4 pt-4 border-t border-purple-700">
-          <p className="text-sm text-purple-300">
-            Wallet: <span className="font-mono bg-purple-900 px-2 py-1 rounded">{account?.address.slice(0, 6)}...{account?.address.slice(-4)}</span>
-          </p>
-          {custodialAddress && (
-            <p className="text-sm text-purple-300 mt-1">
-              Custodial: <span className="font-mono bg-purple-900 px-2 py-1 rounded">{custodialAddress.slice(0, 6)}...{custodialAddress.slice(-4)}</span>
-            </p>
-          )}
+        <div className="flex items-center space-x-2">
+          <span className="text-purple-400 font-bold">{balance.toFixed(2)}</span>
+          <span className="text-gray-300">TELE</span>
         </div>
       </motion.header>
       
