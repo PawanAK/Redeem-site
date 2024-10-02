@@ -26,11 +26,12 @@ export const Dashboard: React.FC = () => {
 
         const client = new IndexerClient("https://api.testnet.aptoslabs.com/v1/graphql");
         const TokenBalance = await client.getAccountCoinsData(data.custodialAddress);
+        console.log("TokenBalance",TokenBalance);
         const teleGageToken = TokenBalance.current_fungible_asset_balances.find(
           token => token.asset_type === "0xf1e9e56bb36fb6b14a0e43bdc08dd13d5712eca1935c63870d1f3cc9827aab51::telegage_token::TeleGageToken"
         );
         if (teleGageToken) {
-          setBalance(teleGageToken.amount / 1000000); // Assuming 6 decimal places
+          setBalance(teleGageToken.amount); // Assuming 6 decimal places
         }
       }
     };
