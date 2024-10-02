@@ -22,7 +22,7 @@ const App: React.FC = () => {
           <Route path="/" element={connected ? <Navigate to="/dashboard" /> : <WalletConnector />} />
           <Route path="/dashboard" element={connected ? <Dashboard /> : <Navigate to="/" />} />
           <Route 
-            path="/user/:userId" 
+            path="/user/:userId/:communityId" 
             element={
               connected ? <Dashboard /> : <WalletConnector />
             } 
