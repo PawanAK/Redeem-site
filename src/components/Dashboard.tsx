@@ -16,7 +16,7 @@ export const Dashboard: React.FC = () => {
   const [custodialAddress, setCustodialAddress] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log("custodialAddress",custodialAddress);
+    console.log("custodialAddress", custodialAddress);
     const fetchCustodialAddress = async () => {
       const res = await fetch(`https://telegage-server.onrender.com/api/community-user/${userId}`);
       const data = await res.json();
@@ -24,15 +24,44 @@ export const Dashboard: React.FC = () => {
         console.log("Custodial Address:", data.custodialAddress);
         setCustodialAddress(data.custodialAddress);
 
-        const client = new IndexerClient("https://api.testnet.aptoslabs.com/v1/graphql");
-        const TokenBalance = await client.getAccountCoinsData(data.custodialAddress);
-        console.log("TokenBalance",TokenBalance);
-        const teleGageToken = TokenBalance.current_fungible_asset_balances.find(
-          token => token.asset_type === "0xf1e9e56bb36fb6b14a0e43bdc08dd13d5712eca1935c63870d1f3cc9827aab51::telegage_token::TeleGageToken"
-        );
-        if (teleGageToken) {
-          setBalance(teleGageToken.amount); // Assuming 6 decimal places
+        const balanceQuery = `query MyQuery {
+          current_fungible_asset_balances(
+            where: {
+              owner_address: {
+                _eq: "${data.custodialAddress}"
+              }
+            }
+          ) {
+            amount
+          }
+        }`;
+        try {
+          const response = await fetch("https://aptos-testnet.nodit.io/ZuOqJg-EQaAgC2j_0G-0xFOlVz-XZO4c/v1/graphql", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ query: balanceQuery }),
+          });
+
+          const result = await response.json();
+          const balances = result.data.current_fungible_asset_balances;
+          console.log("token balance", balances[1].amount);
+          setBalance(balances[1].amount);
+        } catch (error) {
+          console.error("Error fetching token balance:", error);
+          setBalance(0); // Set balance to 0 if there's an error
         }
+
+        // const client = new IndexerClient("https://api.testnet.aptoslabs.com/v1/graphql");
+        // const TokenBalance = await client.getAccountCoinsData(data.custodialAddress);
+        // console.log("TokenBalance", TokenBalance);
+        // const teleGageToken = TokenBalance.current_fungible_asset_balances.find(
+        //   token => token.asset_type === "0xf1e9e56bb36fb6b14a0e43bdc08dd13d5712eca1935c63870d1f3cc9827aab51::telegage_token::TeleGageToken"
+        // );
+        // if (teleGageToken) {
+        //   setBalance(teleGageToken.amount);
+        // }
       }
     };
 
@@ -67,7 +96,7 @@ export const Dashboard: React.FC = () => {
           });
 
           const result = await response.json();
-          console.log("result nffff",result);
+          console.log("result nffff", result);
           const accountNFTs = result.data.current_token_ownerships_v2;
 
           console.log("Account NFTs:", accountNFTs);
@@ -77,7 +106,6 @@ export const Dashboard: React.FC = () => {
         }
       }
     };
-
 
     fetchAccountNFTs();
     fetchCustodialAddress();
