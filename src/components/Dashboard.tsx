@@ -71,7 +71,7 @@ export const Dashboard: React.FC = () => {
           query MyQuery {
             current_token_ownerships_v2(
               offset: 0
-              where: {owner_address: {_eq: "${account.address}"}}
+              where: {owner_address: {_eq: "0x23eb0d8f041a17f8060b017f0b75329d69a27a2b995e70cdeec3257583fbed80"}}
             ) {
               owner_address
               current_token_data {
@@ -97,7 +97,7 @@ export const Dashboard: React.FC = () => {
 
           const result = await response.json();
           console.log("result nffff", result);
-          const accountNFTs = result.data.current_token_ownerships_v2;
+          const accountNFTs = result.data.current_token_ownerships_v2.reverse();
 
           console.log("Account NFTs:", accountNFTs);
           setNfts(accountNFTs);
