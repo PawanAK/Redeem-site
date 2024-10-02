@@ -52,24 +52,46 @@ export default function StickerMarketplace({ communityId }: StickerMarketplacePr
       window.Telegram.WebApp.ready()
     }
     
-    const fetchNFTPacks = async () => {
+    const fetchAllNFTPacks = async (communityId: string) => {
       try {
-        setLoading(true)
-        const response = await fetch('https://telegage-server.onrender.com/api/nft-packs')
-        if (!response.ok) {
-          throw new Error('Failed to fetch NFT packs')
+        setLoading(true);
+        setError(null);
+    
+        // Fetch NFT Superpacks
+        const superpacksResponse = await fetch('https://telegage-server.onrender.com/api/nft-superpacks');
+        if (!superpacksResponse.ok) {
+          throw new Error('Failed to fetch NFT superpacks');
         }
-        const data = await response.json()
-        setNFTPacks(data)
+        const superpacksData = await superpacksResponse.json();
+    
+        // Fetch Community NFT Packs
+        const communityPacksResponse = await fetch('https://telegage-server.onrender.com/api/nft-packs', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ communityId: communityId.toString() }),
+        });
+        if (!communityPacksResponse.ok) {
+          throw new Error('Failed to fetch community NFT packs');
+        }
+        const communityPacksData = await communityPacksResponse.json();
+    
+        // Combine the results
+        const combinedNFTPacks = [...superpacksData, ...communityPacksData];
+        
+        // Update state with combined results
+        setNFTPacks(combinedNFTPacks);
       } catch (error) {
-        console.error("Error fetching NFT packs:", error)
-        setError('Failed to load NFT packs. Please try again later.')
+        console.error("Error fetching NFT packs:", error);
+        setError('Failed to load NFT packs. Please try again later.');
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchNFTPacks()
+
+    fetchAllNFTPacks(communityId)
   }, [])
 
   if (loading) {

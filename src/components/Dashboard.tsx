@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
 import StickerMarketplace from "./StickerMarketplace";
 import NFTCard from "./NFTCard";
-import { IndexerClient } from "aptos";
 import { Wallet } from "lucide-react";
 
 export const Dashboard: React.FC = () => {
