@@ -70,7 +70,7 @@ export const Dashboard: React.FC = () => {
           query MyQuery {
             current_token_ownerships_v2(
               offset: 0
-              where: {owner_address: {_eq: "0x23eb0d8f041a17f8060b017f0b75329d69a27a2b995e70cdeec3257583fbed80"}}
+              where: {owner_address: {_eq: "${custodialAddress}"}}
             ) {
               owner_address
               current_token_data {
