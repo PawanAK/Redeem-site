@@ -18,7 +18,11 @@ interface NFTPack {
   altText: string
 }
 
-export default function StickerMarketplace() {
+interface StickerMarketplaceProps {
+  communityId: string;
+}
+
+export default function StickerMarketplace({ communityId }: StickerMarketplaceProps) {
   const { account } = useWallet()
   const [nftPacks, setNFTPacks] = useState<NFTPack[]>([])
   const [loading, setLoading] = useState(true)
@@ -30,7 +34,8 @@ export default function StickerMarketplace() {
       prompt: pack.keywords,
       wallet: account?.address.toString(),
       negative_prompt: pack.negative,
-      price: pack.price
+      price: pack.price,
+      community_id: communityId
     }
 
     console.log("Minting NFT pack:", data)

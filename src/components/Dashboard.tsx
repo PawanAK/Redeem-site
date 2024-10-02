@@ -9,7 +9,7 @@ import { Wallet } from "lucide-react";
 
 export const Dashboard: React.FC = () => {
   const { account } = useWallet();
-  const { userId } = useParams<{ userId: string }>();
+  const { userId, communityId } = useParams<{ userId: string; communityId: string }>();
   const [balance, setBalance] = useState(0);
   const [activeTab, setActiveTab] = useState("my nfts");
   const [nfts, setNfts] = useState<any[]>([]);
@@ -135,7 +135,7 @@ export const Dashboard: React.FC = () => {
             </div>
           </div>
         ) : (
-          <StickerMarketplace />
+          <StickerMarketplace communityId={communityId || ""} />
         )}
       </motion.div>
     </div>
