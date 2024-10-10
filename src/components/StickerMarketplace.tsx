@@ -24,9 +24,10 @@ interface NFTPack {
 
 interface StickerMarketplaceProps {
   communityId: string;
+  userBalance: number; // Add this new prop
 }
 
-export default function StickerMarketplace({ communityId }: StickerMarketplaceProps) {
+export default function StickerMarketplace({ communityId, userBalance }: StickerMarketplaceProps) {
   const { account } = useWallet()
   const [nftPacks, setNFTPacks] = useState<NFTPack[]>([])
   const [loading, setLoading] = useState(true)
@@ -120,49 +121,55 @@ export default function StickerMarketplace({ communityId }: StickerMarketplacePr
       
       <div className="grid grid-cols-2 gap-1 sm:grid-cols-3 sm:gap-2 lg:grid-cols-4 xl:grid-cols-5">
         <AnimatePresence>
-          {nftPacks.map((pack) => (
-            <motion.div
-              key={pack.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Card className="bg-gray-800 overflow-hidden h-full flex flex-col rounded-lg shadow-md">
-                <CardHeader className="p-0">
-                  <div className="aspect-square relative overflow-hidden">
-                    <img
-                      src={pack.imageUrl}
-                      alt={pack.altText}
-                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement
-                        target.src = 'https://via.placeholder.com/400?text=Image+Not+Found'
-                      }}
-                    />
-                  </div>
-                </CardHeader>
-                <CardContent className="p-2 flex-grow">
-                  <CardTitle className="text-sm font-semibold mb-1 text-white truncate">{pack.title}</CardTitle>
-                  <Badge variant="secondary" className="mb-1 text-xs px-1 py-0">
-                    {pack.price} Tokens
-                  </Badge>
-                  <p className="text-xs text-gray-400 line-clamp-2" title={pack.keywords}>
-                    {pack.keywords}
-                  </p>
-                </CardContent>
-                <CardFooter className="p-2 pt-0">
-                  <Button
-                    className="w-full bg-purple-600 hover:bg-purple-700 text-white text-xs py-1 px-2 rounded"
-                    onClick={() => mintNftPack(pack)}
-                  >
-                    <ShoppingCart className="w-3 h-3 mr-1" />
-                    Buy Pack
-                  </Button>
-                </CardFooter>
-              </Card>
-            </motion.div>
-          ))}
+          {nftPacks.map((pack) => {
+            const isAffordable = userBalance >= pack.price;
+            return (
+              <motion.div
+                key={pack.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Card className={`bg-gray-800 overflow-hidden h-full flex flex-col rounded-lg shadow-md ${!isAffordable ? 'opacity-50' : ''}`}>
+                  <CardHeader className="p-0">
+                    <div className="aspect-square relative overflow-hidden">
+                      <img
+                        src={pack.imageUrl}
+                        alt={pack.altText}
+                        className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement
+                          target.src = 'https://via.placeholder.com/400?text=Image+Not+Found'
+                        }}
+                      />
+                    </div>
+                  </CardHeader>
+                  <CardContent className="p-2 flex-grow">
+                    <CardTitle className="text-sm font-semibold mb-1 text-white truncate">{pack.title}</CardTitle>
+                    <Badge variant="secondary" className="mb-1 text-xs px-1 py-0">
+                      {pack.price} Tokens
+                    </Badge>
+                    <p className="text-xs text-gray-400 line-clamp-2" title={pack.keywords}>
+                      {pack.keywords}
+                    </p>
+                  </CardContent>
+                  <CardFooter className="p-2 pt-0">
+                    <Button
+                      className={`w-full text-white text-xs py-1 px-2 rounded ${
+                        isAffordable ? 'bg-purple-600 hover:bg-purple-700' : 'bg-gray-500 cursor-not-allowed'
+                      }`}
+                      onClick={() => isAffordable && mintNftPack(pack)}
+                      disabled={!isAffordable}
+                    >
+                      <ShoppingCart className="w-3 h-3 mr-1" />
+                      {isAffordable ? 'Buy Pack' : 'Insufficient Balance'}
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+            );
+          })}
         </AnimatePresence>
       </div>
     </div>

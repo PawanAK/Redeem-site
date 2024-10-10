@@ -167,7 +167,7 @@ export const Dashboard: React.FC = () => {
             </div>
           </div>
         ) : (
-          <StickerMarketplace communityId={communityId || ""} />
+          <StickerMarketplace communityId={communityId || ""} userBalance={balance} />
         )}
       </motion.div>
     </div>
