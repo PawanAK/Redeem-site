@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
+import eruda from 'eruda'
+
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
 import StickerMarketplace from "./StickerMarketplace";
 import NFTCard from "./NFTCard";
 import { Wallet } from "lucide-react";
+
+eruda.init()
 
 export const Dashboard: React.FC = () => {
   const { account } = useWallet();
@@ -70,7 +74,7 @@ export const Dashboard: React.FC = () => {
           query MyQuery {
             current_token_ownerships_v2(
               offset: 0
-              where: {owner_address: {_eq: "${custodialAddress}"}}
+              where: {owner_address: {_eq: "${account.address}"}}
             ) {
               owner_address
               current_token_data {

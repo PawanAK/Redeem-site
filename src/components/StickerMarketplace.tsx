@@ -1,4 +1,6 @@
 "use client"
+import eruda from 'eruda'
+
 
 import  { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -7,6 +9,8 @@ import { Button } from "../components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../components/ui/card"
 import { Badge } from "../components/ui/badge"
 import { Loader2, ShoppingCart, AlertCircle } from "lucide-react"
+
+eruda.init()
 
 interface NFTPack {
   title: string
