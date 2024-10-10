@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import eruda from 'eruda'
+// import eruda from 'eruda'
 
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { motion } from "framer-motion";
@@ -8,7 +8,7 @@ import StickerMarketplace from "./StickerMarketplace";
 import NFTCard from "./NFTCard";
 import { Wallet } from "lucide-react";
 
-eruda.init()
+// eruda.init()
 
 export const Dashboard: React.FC = () => {
   const { account } = useWallet();
