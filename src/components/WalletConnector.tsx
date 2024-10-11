@@ -2,6 +2,7 @@ import React from "react";
 
 import { motion } from "framer-motion";
 import { WalletSelector as ShadcnWalletSelector } from "./WalletSelector"
+import logoImg from "../assets/images/Telegage_logo.png"
 
 export const WalletConnector: React.FC = () => {
   return (
@@ -11,6 +12,14 @@ export const WalletConnector: React.FC = () => {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
     >
+      <motion.img
+        src={logoImg}
+        alt="TeleGage Logo"
+        className="w-24 h-24 mx-auto mb-6"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+      />
       <motion.h1 
         className="text-4xl font-bold mb-4 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 text-transparent bg-clip-text"
         initial={{ opacity: 0, y: -20 }}
