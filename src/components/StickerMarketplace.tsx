@@ -43,17 +43,13 @@ export default function StickerMarketplace({ communityId, userBalance }: Sticker
       community_id: communityId
     }
 
-    console.log("Minting NFT pack:", data);
+    console.log("Minting NFT pack:", data)
 
     if (window.Telegram && window.Telegram.WebApp) {
-      const webAppQueryId = "mint_nft";
-      const result = data;
-      const form: any = {};
-      form.web_app_query_id = webAppQueryId;
-      form.result = JSON.stringify(result);
-      window.Telegram.WebApp._request('answerWebAppQuery', { form });
+      window.Telegram.WebApp.sendData(JSON.stringify(data))
+      
     } else {
-      console.error("Telegram WebApp is not available");
+      console.error("Telegram WebApp is not available")
     }
   }
 
