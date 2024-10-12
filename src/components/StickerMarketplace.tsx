@@ -1,5 +1,5 @@
 "use client"
-// import eruda from 'eruda'
+import eruda from 'eruda'
 
 
 import  { useState, useEffect } from "react"
@@ -10,7 +10,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../compone
 import { Badge } from "../components/ui/badge"
 import { Loader2, ShoppingCart, AlertCircle } from "lucide-react"
 
-// eruda.init()
+eruda.init()
 
 interface NFTPack {
   title: string
