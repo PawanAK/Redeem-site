@@ -1,4 +1,4 @@
-```markdown
+
 # TeleGage - AI-Generated Telegram Sticker NFT Platform
 
 TeleGage is a React-based web application that allows users to mint AI-generated Telegram stickers as NFTs using community points. This project integrates with the Aptos blockchain and utilizes various wallets, including Mizu wallet, for seamless transactions.
@@ -36,7 +36,7 @@ TeleGage is a React-based web application that allows users to mint AI-generated
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-username/telegage.git
+   git clone https://github.com/PawanAK/Redeem-site.git
    cd telegage
    ```
 
@@ -67,7 +67,7 @@ The main components of the project are:
 The project uses environment variables for configuration. Create a `.env` file in the root directory with the following variables:
 
 ```
-VITE_APTOS_NODE_URL=https://fullnode.testnet.aptoslabs.com
+VITE_APTOS_NODE_URL=<Nodit aptos Indexer>
 VITE_APTOS_NETWORK=testnet
 VITE_CONTRACT_ADDRESS=0x...
 ```
@@ -111,14 +111,3 @@ async function fetchUserNFTs(address: string) {
   // Process and display NFTs
 }
 ```
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the MIT License.
-```
-
-This Markdown format provides a clear structure for the project description, including sections for features, technologies used, getting started instructions, project structure, configuration, and specific integrations like Mizu Wallet and Nodeit Indexer. It's now properly formatted and ready to be used in a README.md file or documentation.
