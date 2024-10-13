@@ -1,30 +1,124 @@
-# React + TypeScript + Vite
+```markdown
+# TeleGage - AI-Generated Telegram Sticker NFT Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+TeleGage is a React-based web application that allows users to mint AI-generated Telegram stickers as NFTs using community points. This project integrates with the Aptos blockchain and utilizes various wallets, including Mizu wallet, for seamless transactions.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Connect to Aptos-compatible wallets
+- View and manage NFTs
+- Mint AI-generated stickers as NFTs
+- Use community points for transactions
+- Browse and purchase AI-generated sticker packs
+- Responsive design with smooth animations
 
-## Expanding the ESLint configuration
+## Technologies Used
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- React 18
+- TypeScript
+- Vite
+- Tailwind CSS
+- Framer Motion for animations
+- Aptos Blockchain
+- Aptos Wallet Adapter
+- Mizu Wallet
+- Nodeit Indexer
+- Shadcn UI components
 
-- Configure the top-level `parserOptions` property like this:
+## Getting Started
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
+### Prerequisites
+
+- Node.js (v14 or later)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/your-username/telegage.git
+   cd telegage
+   ```
+
+2. Install dependencies:
+   ```
+   npm install
+   ```
+
+3. Start the development server:
+   ```
+   npm run dev
+   ```
+
+4. Open your browser and navigate to `http://localhost:5173`
+
+## Project Structure
+
+The main components of the project are:
+
+- `src/App.tsx`: Main application component
+- `src/components/Dashboard.tsx`: User dashboard displaying NFTs and marketplace
+- `src/components/StickerMarketplace.tsx`: Marketplace for browsing and purchasing sticker packs
+- `src/components/NFTCard.tsx`: Component for displaying individual NFTs
+- `src/components/WalletConnector.tsx`: Wallet connection interface
+
+## Configuration
+
+The project uses environment variables for configuration. Create a `.env` file in the root directory with the following variables:
+
+```
+VITE_APTOS_NODE_URL=https://fullnode.testnet.aptoslabs.com
+VITE_APTOS_NETWORK=testnet
+VITE_CONTRACT_ADDRESS=0x...
+```
+
+## Mizu Wallet Integration
+
+This project integrates Mizu wallet for Aptos blockchain transactions. Mizu wallet is configured in the `WalletProvider` component:
+
+```typescript
+import { WalletProvider } from '@manahippo/aptos-wallet-adapter';
+import { MizuWallet } from '@mizu-wallet/sdk';
+
+const wallets = [
+  new MizuWallet(),
+  // Add other wallet providers here
+];
+
+function App() {
+  return (
+    <WalletProvider wallets={wallets}>
+      {/* Your app components */}
+    </WalletProvider>
+  );
 }
 ```
 
-<!-- - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list -->
+## Nodeit Indexer Usage
+
+We use the Nodeit indexer to fetch data from the Aptos blockchain. This is primarily used in the `Dashboard` component to retrieve NFT data and token balances:
+
+```typescript
+import { NodeitClient } from '@nodeit/client';
+
+const nodeitClient = new NodeitClient({
+  apiKey: process.env.NODEIT_API_KEY,
+  network: 'testnet',
+});
+
+async function fetchUserNFTs(address: string) {
+  const nfts = await nodeitClient.getNFTs(address);
+  // Process and display NFTs
+}
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License.
+```
+
+This Markdown format provides a clear structure for the project description, including sections for features, technologies used, getting started instructions, project structure, configuration, and specific integrations like Mizu Wallet and Nodeit Indexer. It's now properly formatted and ready to be used in a README.md file or documentation.
