@@ -1,30 +1,71 @@
-# React + TypeScript + Vite
+# TeleGage Wallet Connection
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+TeleGage is a React-based web application that allows users to mint AI-generated Telegram stickers as NFTs using community points. This project integrates with the Aptos blockchain and utilizes various wallets, including Mizu wallet, for seamless transactions.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Connect to Aptos-compatible wallets
+- View and manage NFTs
+- Mint AI-generated stickers as NFTs
+- Use community points for transactions
+- Responsive design with Tailwind CSS
 
-## Expanding the ESLint configuration
+## Technologies Used
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- React 18
+- TypeScript
+- Vite
+- Tailwind CSS
+- Aptos Blockchain
+- Mizu Wallet
+- Nodeit Indexer
 
-- Configure the top-level `parserOptions` property like this:
+## Getting Started
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+1. Clone the repository:
+   ```
+   git clone https://github.com/your-username/telegage-wallet-connection.git
+   cd telegage-wallet-connection
+   ```
+
+2. Install dependencies:
+   ```
+   npm install
+   ```
+
+3. Run the development server:
+   ```
+   npm run dev
+   ```
+
+4. Open your browser and navigate to `http://localhost:5173`
+
+## Mizu Wallet Integration
+
+This project integrates Mizu wallet for Aptos blockchain transactions. Mizu wallet is configured in the `WalletProvider` component:
+
+## Nodeit Indexer Usage
+
+We use the Nodeit indexer to fetch data from the Aptos blockchain. This is primarily used in the `Dashboard` component to retrieve NFT data and token balances:
+
+## Building for Production
+
+To build the app for production, run:
+
+```
+npm run build
 ```
 
-<!-- - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list -->
+This will generate a `dist` folder with the production-ready assets.
+
+## Deployment
+
+The project is configured for deployment on Vercel. The `vercel.json` file includes rewrite rules to handle client-side routing:
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License.

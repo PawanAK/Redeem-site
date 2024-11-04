@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import eruda from 'eruda'
+import eruda from "eruda";
 
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { motion } from "framer-motion";
@@ -8,11 +8,14 @@ import StickerMarketplace from "./StickerMarketplace";
 import NFTCard from "./NFTCard";
 import { Wallet } from "lucide-react";
 
-eruda.init()
+eruda.init();
 
 export const Dashboard: React.FC = () => {
   const { account } = useWallet();
-  const { userId, communityId } = useParams<{ userId: string; communityId: string }>();
+  const { userId, communityId } = useParams<{
+    userId: string;
+    communityId: string;
+  }>();
   const [balance, setBalance] = useState(0);
   const [activeTab, setActiveTab] = useState("my nfts");
   const [nfts, setNfts] = useState<any[]>([]);
@@ -21,7 +24,9 @@ export const Dashboard: React.FC = () => {
   useEffect(() => {
     console.log("custodialAddress", custodialAddress);
     const fetchCustodialAddress = async () => {
-      const res = await fetch(`https://telegage-server.onrender.com/api/community-user/${userId}`);
+      const res = await fetch(
+        `https://telegage-server-8lhd.onrender.com/api/community-user/${userId}`
+      );
       const data = await res.json();
       if (data.custodialAddress) {
         console.log("Custodial Address:", data.custodialAddress);
@@ -39,13 +44,16 @@ export const Dashboard: React.FC = () => {
           }
         }`;
         try {
-          const response = await fetch("https://aptos-testnet.nodit.io/ZuOqJg-EQaAgC2j_0G-0xFOlVz-XZO4c/v1/graphql", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ query: balanceQuery }),
-          });
+          const response = await fetch(
+            "https://aptos-testnet.nodit.io/ZuOqJg-EQaAgC2j_0G-0xFOlVz-XZO4c/v1/graphql",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ query: balanceQuery }),
+            }
+          );
 
           const result = await response.json();
           const balances = result.data.current_fungible_asset_balances;
@@ -90,13 +98,16 @@ export const Dashboard: React.FC = () => {
         `;
 
         try {
-          const response = await fetch("https://aptos-testnet.nodit.io/ZuOqJg-EQaAgC2j_0G-0xFOlVz-XZO4c/v1/graphql", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ query }),
-          });
+          const response = await fetch(
+            "https://aptos-testnet.nodit.io/ZuOqJg-EQaAgC2j_0G-0xFOlVz-XZO4c/v1/graphql",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ query }),
+            }
+          );
 
           const result = await response.json();
           console.log("result nffff", result);
@@ -116,7 +127,7 @@ export const Dashboard: React.FC = () => {
 
   return (
     <div className="w-full max-w-6xl mx-auto p-6 space-y-6">
-      <motion.header 
+      <motion.header
         className="bg-gray-800 rounded-lg shadow-lg p-4 flex justify-between items-center"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -125,21 +136,29 @@ export const Dashboard: React.FC = () => {
         <div className="flex items-center space-x-2">
           <Wallet className="text-purple-400 w-6 h-6" />
           <span className="text-white font-mono">
-            {account?.address ? `${account.address.slice(0, 6)}...${account.address.slice(-4)}` : 'Not Connected'}
+            {account?.address
+              ? `${account.address.slice(0, 6)}...${account.address.slice(-4)}`
+              : "Not Connected"}
           </span>
         </div>
         <div className="flex items-center space-x-2">
-          <span className="text-purple-400 font-bold">{balance.toFixed(2)}</span>
+          <span className="text-purple-400 font-bold">
+            {balance.toFixed(2)}
+          </span>
           <span className="text-gray-300">TELE</span>
         </div>
       </motion.header>
-      
+
       <nav className="bg-gray-800 rounded-lg shadow-md overflow-hidden">
         <div className="flex">
           {["My NFTs", "Marketplace"].map((tab) => (
-            <button 
+            <button
               key={tab}
-              className={`flex-1 py-3 px-4 ${activeTab === tab.toLowerCase() ? "bg-purple-600 text-white" : "bg-gray-700 text-gray-300"} transition-colors duration-200`}
+              className={`flex-1 py-3 px-4 ${
+                activeTab === tab.toLowerCase()
+                  ? "bg-purple-600 text-white"
+                  : "bg-gray-700 text-gray-300"
+              } transition-colors duration-200`}
               onClick={() => setActiveTab(tab.toLowerCase())}
             >
               {tab}
@@ -148,7 +167,7 @@ export const Dashboard: React.FC = () => {
         </div>
       </nav>
 
-      <motion.div 
+      <motion.div
         className="bg-gray-800 rounded-lg shadow-md p-6"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -159,15 +178,23 @@ export const Dashboard: React.FC = () => {
               {nfts.map((nft, index) => (
                 <NFTCard
                   key={index}
-                  collectionName={nft.current_token_data.current_collection.collection_name}
+                  collectionName={
+                    nft.current_token_data.current_collection.collection_name
+                  }
                   tokenUri={nft.current_token_data.token_uri}
-                  tokenName={nft.current_token_data.token_name || `Sticker #${nft.current_token_data.token_properties?.['Sticker #']}`}
+                  tokenName={
+                    nft.current_token_data.token_name ||
+                    `Sticker #${nft.current_token_data.token_properties?.["Sticker #"]}`
+                  }
                 />
               ))}
             </div>
           </div>
         ) : (
-          <StickerMarketplace communityId={communityId || ""} userBalance={balance} />
+          <StickerMarketplace
+            communityId={communityId || ""}
+            userBalance={balance}
+          />
         )}
       </motion.div>
     </div>
